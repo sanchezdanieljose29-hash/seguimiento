@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AprendicesController;
 use App\Http\Controllers\EpsController;
 use App\Http\Controllers\FichasdecaracterizacionController;
 use App\Http\Controllers\ProgramasdeformacionController;
@@ -13,8 +14,9 @@ Route::get('/', function () {
     return view('dashboar');
 });
 
-
     Route::resource('regionales', RegionalesController::class);
+
+    Route::resource('aprendices', AprendicesController::class);
 
     Route::resource('programasdeformacion', ProgramasdeformacionController::class);
 
@@ -24,7 +26,7 @@ Route::get('/', function () {
 
     Route::resource('rolesadministrativos', RolesadministrativosController::class);
 
-    Route::resource('rolesadminifichasdecaracterizacionstrativos', FichasdecaracterizacionController::class);
+    Route::resource('fichasdecaracterizacion', FichasdecaracterizacionController::class);
 
   
 

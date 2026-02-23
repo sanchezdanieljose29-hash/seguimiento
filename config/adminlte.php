@@ -334,6 +334,12 @@ return [
             ],
             [
                 
+                'text' => 'Aprendices',
+            'url' => 'aprendices',
+            'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+            ],
+            [
+                
                 'text' => 'Programas de Formación',
             'url' => 'programasdeformacion',
             'icon' => '<i class="fa-solid fa-location-arrow"></i>',

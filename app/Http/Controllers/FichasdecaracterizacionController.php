@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\fichasdecaracterizacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class FichasdecaracterizacionController extends Controller
 {
@@ -21,7 +23,8 @@ class FichasdecaracterizacionController extends Controller
      */
     public function create()
     {
-        //
+        return view('FichaCaracterizacion.create');
+
     }
 
     /**
@@ -29,7 +32,48 @@ class FichasdecaracterizacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         //PREPARA LA VALIDACIÓN PARA QUE LOS CAMPOS NO LLEGUEN VACIOS
+     $v = validator::make($request -> all(), [ 
+     'codigo' => ['required'],
+     'Denominacion' => ['required'],
+     'Cupo' => ['required'],
+     'FechaInicio' => ['required'],
+     'FechaFin' => ['required'],
+     'Direccion' => ['required'],
+     'Observaciones' => ['required'],
+     'tblprogramasdeformacion_NIS' => ['required'],
+     'tblcentrosdeformacion_NIS' => ['required']
+     ]);
+
+    
+     if ($v->fails()) {
+
+return back()->with('errors', $v->errors());
+
+     }
+else {
+
+     $input=$request->all();
+     $input['codigo'] = $input['codigo'];
+      $input['Denominacion'] = $input['Denominacion'];
+      $input['Cupo'] = $input['Cupo'];
+      $input['FechaInicio'] = $input['FechaInicio'];
+      $input['FechaFin'] = $input['FechaFin'];
+      $input['Direccion'] = $input['Direccion'];
+      $input['Observaciones'] = $input['Observaciones'];
+      $input['tblprogramasdeformacion_NIS'] = $input['tblprogramasdeformacion_NIS'];
+      $input['tblcentrosdeformacion_NIS'] = $input['tblcentrosdeformacion_NIS'];
+      
+     fichasdecaracterizacion::create($input);
+   /*  $succesMsg="Usuario Creado con exito";
+     alert('Muy bien' , 'Usuario registrado con exito');
+     return back(); 
+     */
+
+     return back()->with('success', 'Usuario registrado con éxito');
+
+    }
+
     }
 
     /**

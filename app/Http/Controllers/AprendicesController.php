@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\aprendices;
 use Illuminate\Http\Request;
 
 class AprendicesController extends Controller
@@ -11,7 +12,8 @@ class AprendicesController extends Controller
      */
     public function index()
     {
-        //
+
+        return view('Aprendices.index');
     }
 
     /**
