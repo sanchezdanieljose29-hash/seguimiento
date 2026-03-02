@@ -3,7 +3,7 @@
 @section('title', 'Crear Regional')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">Actualizar Regional</h1>
+<h1 class="m-0 text-dark">Actualizar Regional</h1>
 @endsection
 
 @section('content')
@@ -24,7 +24,7 @@
                 @method('PUT')
                 <div class="card-body">
 
-                    
+
                     {{-- Código --}}
                     <div class="form-group">
                         <label for="codigo">
@@ -32,11 +32,11 @@
                             Código postal
                         </label>
                         <input type="text"
-                               id="codigo"
-                               name="codigo"
-                               class="form-control"
-                               placeholder="Ingrese el código postal"
-                               value="{{ old('codigo' , $regional -> codigo) }}">  
+                            id="codigo"
+                            name="codigo"
+                            class="form-control"
+                            placeholder="Ingrese el código postal"
+                            value="{{ old('codigo' , $regional -> codigo) }}">
                     </div>
 
                     {{-- Denominación --}}
@@ -46,11 +46,11 @@
                             Denominación
                         </label>
                         <input type="text"
-                               id="denominacion"
-                               name="Denominacion"
-                               class="form-control"
-                               placeholder="Nombre de la regional"
-                               value="{{ old('Denominacion', $regional->Denominacion) }}">
+                            id="denominacion"
+                            name="Denominacion"
+                            class="form-control"
+                            placeholder="Nombre de la regional"
+                            value="{{ old('Denominacion', $regional->Denominacion) }}">
                     </div>
 
                     {{-- Observaciones --}}
@@ -60,10 +60,10 @@
                             Observaciones
                         </label>
                         <textarea name="Observaciones"
-                                  id="Observaciones"
-                                  class="form-control"
-                                  rows="4"
-                                  value="Observaciones adicionales">{{ old('Observaciones', $regional->Observaciones) }}</textarea>
+                            id="Observaciones"
+                            class="form-control"
+                            rows="4"
+                            value="Observaciones adicionales">{{ old('Observaciones', $regional->Observaciones) }}</textarea>
                     </div>
 
                 </div>

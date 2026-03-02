@@ -3,8 +3,8 @@
 @section('title', 'Crear Regional')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">Actualizar Rol</h1>
-    
+<h1 class="m-0 text-dark">Actualizar Rol</h1>
+
 @endsection
 
 @section('content')
@@ -25,7 +25,7 @@
                 @method('PUT')
                 <div class="card-body">
 
-                    
+
                     {{-- Descripcion --}}
                     <div class="form-group">
                         <label for="Descripcion">
@@ -33,14 +33,14 @@
                             Descripcion
                         </label>
                         <input type="text"
-                               id="Descripcion"
-                               name="Descripcion"
-                               class="form-control"
-                               placeholder="Ingrese el código postal"
-                               value="{{ old('Descripcion' , $roles -> Descripcion) }}">  
+                            id="Descripcion"
+                            name="Descripcion"
+                            class="form-control"
+                            placeholder="Ingrese el código postal"
+                            value="{{ old('Descripcion' , $roles -> Descripcion) }}">
                     </div>
 
-                   
+
                 </div>
 
                 {{-- Footer --}}

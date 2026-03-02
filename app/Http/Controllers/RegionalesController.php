@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Regionales;
-use App\Models\regionales as ModelsRegionales;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use RealRashid\SweetAlert\Facades\Alert;
 
 
-use function Laravel\Prompts\alert;
+
+
 
 class RegionalesController extends Controller
 {
@@ -26,36 +25,36 @@ class RegionalesController extends Controller
 
     public function store(Request $request)
     {
-    //PREPARA LA VALIDACIÓN PARA QUE LOS CAMPOS NO LLEGUEN VACIOS
-     $v = validator::make($request -> all(), [ 
-     'codigo' => ['required'],
-     'Denominacion' => ['required'],
-     'Observaciones' => ['required']
-     ]);
 
-     if ($v->fails()) {
+        //PREPARA LA VALIDACIÓN PARA QUE LOS CAMPOS NO LLEGUEN VACIOS
+        $v = validator::make($request->all(), [
+            'codigo' => ['required'],
+            'Denominacion' => ['required'],
+            'Observaciones' => ['required'],
+            'cli_anexo_camara' => ['required']
+        ]);
 
-return back()->with('errors', $v->errors());
+        if ($v->fails()) {
 
-     }
-else {
+            return back()->with('errors', $v->errors());
+        } else {
 
-     $input=$request->all();
-     $input['codigo'] = $input['codigo'];
-      $input['Denominacion'] = $input['Denominacion'];
-      $input['Observaciones'] = $input['Observaciones'];
-      $input['password']=bcrypt($input['codigo'] );
-     regionales::create($input);
-   /*  $succesMsg="Usuario Creado con exito";
+            $input = $request->all();
+            $input['codigo'] = $input['codigo'];
+            $input['Denominacion'] = $input['Denominacion'];
+            $input['Observaciones'] = $input['Observaciones'];
+            $input['password'] = bcrypt($input['codigo']);
+            $cli_anexo_camara = 'cam_' . $request['documento'] . '.' . $request->file('cli_anexo_camara')->extension();
+            $request->file('cli_anexo_camara')->move(public_path('/uploads/clientes/camara/'), $cli_anexo_camara);
+            regionales::create($input);
+            /*  $succesMsg="Usuario Creado con exito";
      alert('Muy bien' , 'Usuario registrado con exito');
      return back(); 
      */
 
-     return back()->with('success', 'Usuario registrado con éxito');
-
+            return back()->with('success', 'Usuario registrado con éxito');
+        }
     }
-
-}
 
     /*
 
@@ -96,9 +95,8 @@ else {
      */
     public function edit($NIS)
     {
-         $regional = Regionales::findOrFail($NIS);
-    return view('Regionales.edit', compact('regional'));
-
+        $regional = Regionales::findOrFail($NIS);
+        return view('Regionales.edit', compact('regional'));
     }
 
     /**
@@ -106,25 +104,25 @@ else {
      */
     public function update(Request $request, $NIS)
     {
-        
+
 
         $request->validate([
-        'codigo' => 'required',
-        'Denominacion' => 'required',
-        'Observaciones' => 'required',
-    ]);
+            'codigo' => 'required',
+            'Denominacion' => 'required',
+            'Observaciones' => 'required',
+        ]);
 
-    $regional = Regionales::findOrFail($NIS);
+        $regional = Regionales::findOrFail($NIS);
 
-    $regional->update([
-        'codigo' => $request->codigo,
-        'Denominacion' => $request->Denominacion,
-        'Observaciones' => $request->Observaciones,
-    ]);
+        $regional->update([
+            'codigo' => $request->codigo,
+            'Denominacion' => $request->Denominacion,
+            'Observaciones' => $request->Observaciones,
+        ]);
 
-    return redirect()
-        ->route('regionales.index')
-        ->with('success', 'Regional actualizada correctamente');
+        return redirect()
+            ->route('regionales.index')
+            ->with('success', 'Regional actualizada correctamente');
     }
 
     /**
@@ -136,8 +134,7 @@ else {
         $regional->delete();
 
         return redirect()
-        ->route('regionales.index')
-        ->with('success','Regional Eliminada Correctamente');
-
+            ->route('regionales.index')
+            ->with('success', 'Regional Eliminada Correctamente');
     }
 }

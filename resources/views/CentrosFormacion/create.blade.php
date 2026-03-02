@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<h1>Agregar nueva ficha</h1>
+<h1>Agregar nuevo centro de formación</h1>
 <br>
 
 @if ($errors->any())
@@ -19,7 +19,7 @@
 
 <div class="card">
     <div class="card-header">
-        <form action="{{ route('fichasdecaracterizacion.store') }}" method="POST">
+        <form action="{{ route('centrosformacion.store') }}" method="POST">
             @csrf
 
             <label for="codigo">Código</label>
@@ -28,26 +28,15 @@
             <label for="Denominacion">Denominacion</label>
             <input type="text" id="Denominacion" name="Denominacion"> <br><br>
 
-            <label for="Cupo">Cupo</label>
-            <input type="text" id="Cupo" name="Cupo"> <br><br>
-
-            <label for="FechaInicio">Fecha de inicio</label>
-            <input type="text" id="FechaInicio" name="FechaInicio"> <br><br>
-
-            <label for="FechaFin">Fecha Fin</label>
-            <input type="text" id="FechaFin" name="FechaFin"> <br><br>
-
-            <label for="Direccion">Direccion</label>
+            <label for="Direccion">Dirección</label>
             <input type="text" id="Direccion" name="Direccion"> <br><br>
 
             <label for="Observaciones">Observaciones</label>
             <input type="text" id="Observaciones" name="Observaciones"> <br><br>
 
-            <label for="tblprogramasdeformacion_NIS">Pograma de formación</label>
-            <input type="text" id="tblprogramasdeformacion_NIS" name="tblprogramasdeformacion_NIS"> <br><br>
+            <label for="tblregionales_NIS">Regional</label>
+            <input type="text" id="tblregionales_NIS" name="tblregionales_NIS"> <br><br>
 
-            <label for="tblcentrosdeformacion_NIS">Centro de formación</label>
-            <input type="text" id="tblcentrosdeformacion_NIS" name="tblcentrosdeformacion_NIS"> <br><br>
 
     </div>
 
@@ -56,12 +45,12 @@
 <div>
 
     <div class="card-footer text-right">
-        <a href="{{ route('fichasdecaracterizacion.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Cancelar
+        <a href="{{ route('centrosformacion.index') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
         </a>
 
         <button type="submit" class="btn btn-success">
-            <i class="fas fa-save"></i> Guardar Rol
+            <i class="fas fa-save"></i> Guardar centro de formación
         </button>
 
     </div>

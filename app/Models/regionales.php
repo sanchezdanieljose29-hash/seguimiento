@@ -15,7 +15,8 @@ protected $keyType = 'int'; // o 'int' según sea el caso
         'codigo',
         'Denominacion',
         'Observaciones',
-        'password'
+        'password',
+        'cli_anexo_camara'
     ];
 
     

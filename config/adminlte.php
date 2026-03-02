@@ -152,6 +152,7 @@ return [
     |
     */
 
+
     'layout_topnav' => null,
     'layout_boxed' => null,
     'layout_fixed_sidebar' => null,
@@ -325,50 +326,83 @@ return [
             'icon' => 'fas fa-users',
 
             'submenu' => [
-			
-			[
-                
-                'text' => 'Regionales',
-            'url' => 'regionales',
-            'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+
+                [
+
+                    'text' => 'Bitacoras de seguimiento',
+                    'url' => 'bitacorasseguimientos',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+
+                    'text' => 'Regionales',
+                    'url' => 'regionales',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+
+                    'text' => 'Aprendices',
+                    'url' => 'aprendices',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+
+                    'text' => 'Programas de Formación',
+                    'url' => 'programasdeformacion',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+
+                    'text' => 'Eps',
+                    'url' => 'eps',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+
+                    'text' => 'Tipos de documentos',
+                    'url' => 'tiposdedocumentos',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+
+                    'text' => 'Roles Administrativos',
+                    'url' => 'rolesadministrativos',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+
+                    'text' => 'Fichas de caracterización',
+                    'url' => 'fichasdecaracterizacion',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+
+                    'text' => 'Entes conformadores',
+                    'url' => 'enteconformadores',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+
+                    'text' => 'Instuctores',
+                    'url' => 'instructores',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+                    'text' => 'Alternativa de etapa productiva',
+                    'url' => 'alternativaetapa',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+                    'text' => 'Centros de formacion',
+                    'url' => 'centrosformacion',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
+                [
+                    'text' => 'Subtipos de alternativas',
+                    'url' => 'subtipoalternativa',
+                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                ],
             ],
-            [
-                
-                'text' => 'Aprendices',
-            'url' => 'aprendices',
-            'icon' => '<i class="fa-solid fa-location-arrow"></i>',
-            ],
-            [
-                
-                'text' => 'Programas de Formación',
-            'url' => 'programasdeformacion',
-            'icon' => '<i class="fa-solid fa-location-arrow"></i>',
-            ],
-            [
-                
-                'text' => 'Eps',
-            'url' => 'eps',
-            'icon' => '<i class="fa-solid fa-location-arrow"></i>',
-            ],
-            [
-                
-                'text' => 'Tipos de documentos',
-            'url' => 'tiposdedocumentos',
-            'icon' => '<i class="fa-solid fa-location-arrow"></i>',
-            ],
-             [
-                
-                'text' => 'Roles Administrativos',
-            'url' => 'rolesadministrativos',
-            'icon' => '<i class="fa-solid fa-location-arrow"></i>',
-            ],
-            [
-                
-                'text' => 'Fichas de caracterización',
-            'url' => 'fichasdecaracterizacion',
-            'icon' => '<i class="fa-solid fa-location-arrow"></i>',
-            ],
-        ],
         ],
         ['header' => 'account_settings'],
         [
@@ -589,5 +623,5 @@ return [
     |
     */
 
-    'livewire' => false,
+    'livewire' => true,
 ];

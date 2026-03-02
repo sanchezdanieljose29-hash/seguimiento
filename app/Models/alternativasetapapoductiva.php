@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class alternativasetapapoductiva extends Model
 {
-    protected $table ="tblalternativasetapapoductiva";
+    protected $table ="tblalternativasetapaproductiva";
+    protected $primaryKey = 'NIS';
 
     protected $fillable = [
 
-    'NIS', 'Denominación', 'descripcion', 'estado'
+    'Denominacion', 'descripcion'
 
     ];
 

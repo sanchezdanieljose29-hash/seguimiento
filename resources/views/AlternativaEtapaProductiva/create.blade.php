@@ -3,7 +3,7 @@
 @section('title', 'Crear Regional')
 
 @section('content_header')
-    <h1 class="m-0 text-dark">Registrar Regional</h1>
+    <h1 class="m-0 text-dark">Registrar Alternativa</h1>
 @endsection
 
 @section('content')
@@ -27,76 +27,59 @@
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-map-marked-alt"></i>
-                    Datos de la Regional
+                    Datos de la alternativa de etapa productiva
                 </h3>
             </div>
 
-            <form action="{{ route('regionales.store') }}" method="POST">
+            <form action="{{ route('alternativaetapa.store') }}" method="POST">
                 @csrf
 
                 <div class="card-body">
 
                     {{-- Código --}}
                     <div class="form-group">
-                        <label for="codigo">
+                        <label for="Denominacion">
                             <i class="fas fa-barcode"></i>
-                            Código postal
+                            Denominacion
                         </label>
                         <input type="text"
-                               id="codigo"
-                               name="codigo"
+                               id="Denominacion"
+                               name="Denominacion"
                                class="form-control"
-                               placeholder="Ingrese el código postal"
-                               value="{{ old('codigo') }}">
+                               placeholder=""
+                               value="{{ old('Denominacion') }}">
                     </div>
 
                     {{-- Denominación --}}
                     <div class="form-group">
-                        <label for="denominacion">
+                        <label for="descripcion">
                             <i class="fas fa-building"></i>
-                            Denominación
+                            descripcion
                         </label>
                         <input type="text"
-                               id="denominacion"
-                               name="Denominacion"
+                               id="descripcion"
+                               name="descripcion"
                                class="form-control"
-                               placeholder="Nombre de la regional"
-                               value="{{ old('Denominacion') }}">
+                               placeholder=""
+                               value="{{ old('descripcion') }}">
                     </div>
 
-                    {{-- Observaciones --}}
-                    <div class="form-group">
-                        <label for="Observaciones">
-                            <i class="fas fa-comment-dots"></i>
-                            Observaciones
-                        </label>
-                        <textarea name="Observaciones"
-                                  id="Observaciones"
-                                  class="form-control"
-                                  rows="4"
-                                  placeholder="Observaciones adicionales">{{ old('Observaciones') }}</textarea>
-                    </div>
+                    
 
-                    <td>
-                   <div class="form-group">
-                       <label for="cli_anexo_camara">Camara de Comercio</label>
-                       <div class="input-group">
-                       <input type="file" name="cli_anexo_camara" id="cli_anexo_camara">
-                   </div>
-                  </div>
-                    </td>
+                    
+                  
 
 
                 </div>
 
                 {{-- Footer --}}
                 <div class="card-footer text-right">
-                    <a href="{{ route('regionales.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('alternativaetapa.index') }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Cancelar
                     </a>
 
                     <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Guardar Regional
+                        <i class="fas fa-save"></i> Guardar Alternativa
                     </button>
                 </div>
 
