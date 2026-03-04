@@ -13,6 +13,7 @@ class bitacorasseguimiento extends Model
         'BitacoraNumero',
         'Aprendiz_NIS',
         'ProgramaFormacion_NIS',
+        'FichaCaracterizacion_NIS',
         'EnteConformador_NIS',
         'Instructor_NIS',
         'TipoAlternativa_NIS',

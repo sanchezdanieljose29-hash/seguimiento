@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\alternativasetapapoductiva;
+use App\Models\aprendices;
 use App\Models\bitacorasseguimiento;
 use App\Models\enteconformadores;
 use App\Models\evidenciasbitacoras;
+use App\Models\fichasdecaracterizacion;
 use App\Models\instructores;
 use App\Models\programasdeformacion;
+use App\Models\subtiposalternativa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
 class BitacorasSeguimientosController extends Controller
 {
@@ -33,22 +37,28 @@ class BitacorasSeguimientosController extends Controller
         $instructor = instructores::all();
         $ente = enteconformadores::all();
         $tipoalternativa = alternativasetapapoductiva::all();
+        $subtipoalternativa = subtiposalternativa::all();
         $programas = programasdeformacion::all();
         $bitacora = bitacorasseguimiento::all();
-        return view('BitacorasSeguimientos.create', compact('bitacora', 'instructor', 'programas', 'ente', 'tipoalternativa'));
+        $aprendices = aprendices::all();
+        $fichas = fichasdecaracterizacion::all();
+        return view('BitacorasSeguimientos.create', compact('bitacora', 'instructor', 'programas', 'ente', 'tipoalternativa', 'subtipoalternativa', 'aprendices', 'fichas'));
     }
 
     /**
      *   
      */
+
     public function store(Request $request)
-    {
+{
 
 
-        $v = Validator::make($request->all(), [
+        $request->validate([
+
+            // Campos principales
             'BitacoraNumero' => ['required'],
-            'Aprendiz_NIS' => ['required'],
             'ProgramaFormacion_NIS' => ['required'],
+            'FichaCaracterizacion_NIS' => ['required'],
             'EnteConformador_NIS' => ['required'],
             'Instructor_NIS' => ['required'],
             'TipoAlternativa_NIS' => ['required'],
@@ -57,65 +67,66 @@ class BitacorasSeguimientosController extends Controller
             'NivelRiesgo' => ['required'],
             'NivelRiesgoCorresponde' => ['required'],
             'CuentaConEPP' => ['required'],
-            'FirmaAprendiz' => ['required'],
-            'FirmaInstructor' => ['required'],
-            'firmaJefeInmediato' => ['required'],
 
-            // Datos detalle (arrays)
-            'FechaInicioActividad' => ['required', Rule::date()->format('Y-m-d'),'array'],
-            'FechaFinActividad' => ['required', Rule::date()->format('Y-m-d'),'array'],
-            'DescripcionActividad' => ['required', 'array'],
-            'EvidenciaCumplimiento' => ['required|file|mimes:jpg,png,pdf|max:2048', 'array'],
+            // Firmas (archivos)
+            'FirmaAprendiz' => ['required', 'file', 'mimes:jpg,png,pdf', 'max:2048'],
+            'FirmaInstructor' => ['required', 'file', 'mimes:jpg,png,pdf', 'max:2048'],
+            'firmaJefeInmediato' => ['required', 'file', 'mimes:jpg,png,pdf', 'max:2048'],
+
+            // Arrays evidencias
+            'FechaInicioActividad' => ['required', 'array', 'min:1'],
+            'FechaInicioActividad.*' => ['required', 'date'],
+
+            'FechaFinActividad' => ['required', 'array', 'min:1'],
+            'FechaFinActividad.*' => ['required', 'date'],
+
+            'DescripcionActividad' => ['required', 'array', 'min:1'],
+            'DescripcionActividad.*' => ['required', 'string'],
+
             'Observaciones' => ['required', 'array'],
+            'Observaciones.*' => ['nullable', 'string'],
+
+            'EvidenciaCumplimiento' => ['required', 'array', 'min:1'],
+            'EvidenciaCumplimiento.*' => ['required', 'file', 'mimes:jpg,png,pdf', 'max:2048'],
         ]);
 
+        DB::beginTransaction();
 
+        try {
 
+            // 1️⃣ Crear bitácora principal
+            $bitacora = bitacorasseguimiento::create([
+                'BitacoraNumero' => $request->BitacoraNumero,
+                'Aprendiz_NIS' => $request->Aprendiz_NIS,
+                'ProgramaFormacion_NIS' => $request->ProgramaFormacion_NIS,
+                'EnteConformador_NIS' => $request->EnteConformador_NIS,
+                'Instructor_NIS' => $request->Instructor_NIS,
+                'TipoAlternativa_NIS' => $request->TipoAlternativa_NIS,
+                'SubtipoAlternativa' => $request->SubtipoAlternativa,
+                'AfiliadoArl' => $request->AfiliadoArl,
+                'NivelRiesgo' => $request->NivelRiesgo,
+                'NivelRiesgoCorresponde' => $request->NivelRiesgoCorresponde,
+                'CuentaConEPP' => $request->CuentaConEPP,
+                'FirmaAprendiz' => 1,
+                'FirmaInstructor' => 1,
+                'firmaJefeInmediato' => 1,
+            ]);
 
-        if ($v->fails()) {
+            // 2️⃣ Obtener arrays
+            $fechasInicio = $request->input('FechaInicioActividad', []);
+            $fechasFin = $request->input('FechaFinActividad', []);
+            $descripciones = $request->input('DescripcionActividad', []);
+            $observaciones = $request->input('Observaciones', []);
+            $archivos = $request->file('EvidenciaCumplimiento', []);
 
-            return back()->with('errors', $v->errors());
-        } else {
-
-       // Guardar en storage/app/public
-       //PRIMERO LOS ARCHIVOS
-       $nombrearchivo = time() . 'evidencia' . $request->file('archivo')->extension();
-    $observaciones = $request->file('archivo')->store('uploads', 'public', 'evidencias');
- 
-    
-            DB::beginTransaction();
-
-            //Crea Registro en la tabla de bitacoras
-
-            $input = $request->all();
-            $input['BitacoraNumero'] = $input['BitacoraNumero'];
-            $input['Aprendiz_NIS'] = $input['Aprendiz_NIS'];
-            $input['ProgramaFormacion_NIS'] = $input['ProgramaFormacion_NIS'];
-            $input['EnteConformador_NIS'] = $input['EnteConformador_NIS'];
-            $input['Instructor_NIS'] = $input['Instructor_NIS'];
-            $input['TipoAlternativa_NIS'] = $input['TipoAlternativa_NIS'];
-            $input['SubtipoAlternativa'] = $input['SubtipoAlternativa'];
-            $input['AfiliadoArl'] = $input['AfiliadoArl'];
-            $input['NivelRiesgo'] = $input['NivelRiesgo'];
-            $input['NivelRiesgoCorresponde'] = $input['NivelRiesgoCorresponde'];
-            $input['CuentaConEPP'] = $input['CuentaConEPP'];
-            $input['FirmaAprendiz'] = 1;
-            bitacorasseguimiento::create($input);
-
-            // Obtener arrays
-            $fechasInicio = $request->FechaInicioActividad;
-            $fechasFin = $request->FechaFinActividad;
-            $descripciones = $request->DescripcionActividad;
-            $observaciones = $request->Observaciones;
-            $archivos = $request->file('EvidenciaCumplimiento');
-
+            // 3️⃣ Guardar detalle
             foreach ($descripciones as $index => $descripcion) {
 
-                // Guardar archivo si existe
                 $rutaArchivo = null;
 
                 if (isset($archivos[$index])) {
-                    $rutaArchivo = $archivos[$index]->store('evidencias', 'public');
+                    $rutaArchivo = $archivos[$index]
+                        ->store('evidencias', 'public');
                 }
 
                 evidenciasbitacoras::create([
@@ -124,20 +135,25 @@ class BitacorasSeguimientosController extends Controller
                     'DescripcionActividad' => $descripcion,
                     'EvidenciaCumplimiento' => $rutaArchivo,
                     'Observaciones' => $observaciones[$index] ?? null,
-                    'bitacora_NIS' => $request->bitacora_NIS,
-                    'tblbitacorasseguimiento_NIS' => $request->tblbitacorasseguimiento_NIS,
+                    'tblbitacorasseguimiento_NIS' => $bitacora->id, // usa el ID real
                 ]);
             }
 
+            DB::commit();
 
+            return redirect()->back()->with('success', 'Registro guardado correctamente');
+        } catch (\Exception $e) {
 
+            Log::error('Error en store Bitacora:', [
+                'mensaje' => $e->getMessage(),
+                'traza' => $e->getTraceAsString(),
+            ]);
 
-
-
-
-            return back()->with('success', 'Bitacora registrada con éxito');
+            return back()->with('error', $e->getMessage());
         }
     }
+
+
 
     /**
      * Display the specified resource.

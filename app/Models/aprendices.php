@@ -21,6 +21,7 @@ class aprendices extends Model
         'Sexo',
         'FechaNac',
         'tbleps_NIS',
+        'password'
         
 
     ];
