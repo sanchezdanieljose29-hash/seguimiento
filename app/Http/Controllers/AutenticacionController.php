@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Aprendices;
-use App\Models\Eps;
+use App\Models\eps;
+use App\Models\fichasdecaracterizacion;
+use App\Models\Sexo;
 use App\Models\Tiposdocumentos;
+use App\Models\tiposdocumentos as ModelsTiposdocumentos;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AutenticacionController extends Controller
@@ -14,73 +19,72 @@ class AutenticacionController extends Controller
     public function showRegister()
     {
         $tipodocumentos = Tiposdocumentos::all();
-        return view('auth.register', compact('tipodocumentos'));
+
+        return view('Auth.register', compact('tipodocumentos'));
     }
 
     public function showLogin()
     {
-        return view('auth.login');
+        $tipodocumentos = Tiposdocumentos::all();
+        return view('Auth.login', compact('tipodocumentos'));
     }
 
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'Nombres' => 'required|string|max:100',
-            'Apellidos' => 'required|string|max:100',
-            'tbltiposdocumentos_NIS' => 'required|exists:tbltiposdocumentos,id',
-            'Ndoc' => 'required|string|max:20|unique:tblaprendices,Ndoc',
-            'Direccion' => 'required|string|max:255',
-            'Telefono' => 'required|string|max:20',
-            'CorreoInstitucional' => 'required|email|unique:tblaprendices,CorreoInstitucional',
-            'CorreoPersonal' => 'required|email',
-            'Sexo' => 'required|in:M,F,Otro',
-            'FechaNac' => 'required|date',
-            'tbleps_NIS' => 'required|exists:tbleps,id',
+            // Datos para tblusuarios
+            'Tdoc' => 'required|exists:tbltiposdocumentos,NIS',
+            'Ndoc' => 'required|string|max:15|unique:tblusuarios,Ndoc',
+
         ]);
 
-        // Encriptar contraseña (por defecto será el documento)
-        $validated['password'] = bcrypt($validated['Ndoc']);
+        // 1. Crear usuario en tblusuarios
+        $usuario = User::create([
+            'Tdoc' => $validated['Tdoc'],
+            'Ndoc' => $validated['Ndoc'],
+            'password_cifrado' => Hash::make($validated['Ndoc']), // Ndoc como contraseña
+            'activo' => true,
+        ]);
 
-        $aprendiz = Aprendices::create($validated);
+        Auth::login($usuario);
 
-        Auth::login($aprendiz);
-
-        return redirect()->route('dashboard')
-            ->with('success', 'Usuario registrado con éxito');
+        return redirect()->route('showLogin')
+            ->with('success', 'Aprendiz registrado con éxito');
     }
 
    public function login(Request $request)
 {
     $request->validate([
+        'Tdoc' => 'required|exists:tbltiposdocumentos,NIS',
         'Ndoc' => 'required|string',
         'password' => 'required|string'
     ]);
 
-    $credentials = [
-        'Ndoc' => $request->Ndoc,
-        'password' => $request->password
-    ];
+    // Buscar usuario por tipo y número de documento
+    $usuario = User::where('Tdoc', $request->Tdoc)
+        ->where('Ndoc', $request->Ndoc)
+        ->first();
 
-    if (Auth::attempt($credentials)) {
+    if ($usuario && Hash::check($request->password, $usuario->password_cifrado)) {
 
+        Auth::login($usuario);
         $request->session()->regenerate();
 
-        // 🔥 Redirección según rol (opcional pero recomendado)
-        $user = Auth::user();
-
-        if ($user->role === 'aprendiz') {
-            return redirect()->route('aprendiz.dashboard');
-        }
-
-        if ($user->role === 'instructor') {
-            return redirect()->route('instructor.dashboard');
-        }
-
-        if ($user->role === 'admin') {
+        // Redirección según rol
+        if ($usuario->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
         }
 
-        return redirect()->route('dashboard');
+        if ($usuario->hasRole('instructor')) {
+            return redirect()->route('instructor.dashboard');
+        }
+
+        if ($usuario->hasRole('aprendiz')) {
+            return redirect()->route('aprendiz.dashboard');
+        }
+
+        // Si no tiene rol conocido
+        return redirect('/')->with('error','El usuario no tiene un rol asignado.');
     }
 
     throw ValidationException::withMessages([
@@ -91,10 +95,8 @@ class AutenticacionController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect()->route('login');
     }
 }

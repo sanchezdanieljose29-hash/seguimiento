@@ -2,47 +2,51 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    protected $table = 'tblusuarios';
+    protected $primaryKey = 'NIS';
+    public $timestamps = false;
+
+
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'Tdoc',
+        'Ndoc',
+        'Nombres_Apellidos',
+        'CorreoElectronico',
+        'password_cifrado'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password_cifrado'
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $casts = [ // 👈 OPCIONAL pero recomendado
+        'activo' => 'boolean',
+        'FechaRegistro' => 'datetime',
+        'UltimoAcceso' => 'datetime',
+        'BloqueadoHasta' => 'datetime',
+    ];
+
+    
+
+    // Relaciones (solo estas dos, la de roles sobra)
+    public function aprendiz()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasOne(aprendices::class, 'Usuarios_NIS', 'NIS');
     }
+
+    public function instructor()
+    {
+        return $this->hasOne(instructores::class, 'Usuarios_NIS', 'NIS');
+    }
+
 }

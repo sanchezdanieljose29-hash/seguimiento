@@ -301,7 +301,8 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
+
+        // Navbar items
         [
             'type' => 'navbar-search',
             'text' => 'search',
@@ -312,105 +313,104 @@ return [
             'topnav_right' => true,
         ],
 
-        // Sidebar items:
+        // Sidebar items
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
+
         [
-            'text' => 'blog',
-            'url' => 'admin/blog',
-            'can' => 'manage-blog',
+            'text' => 'Usuarios y Roles',
+            'route' => 'admin.asignaroles',
+            'icon' => 'fas fa-user-cog',
+        ],
+        [
+            'text' => 'Crear Usuarios',
+            'route' => 'admin.usuarios.index',
+            'icon' => 'fas fa-user-cog',
         ],
         [
             'text' => 'Ver',
             'icon' => 'fas fa-users',
-
             'submenu' => [
 
                 [
-
                     'text' => 'Bitacoras de seguimiento',
                     'url' => 'bitacorasseguimientos',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
-
                     'text' => 'Regionales',
                     'url' => 'regionales',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
-
                     'text' => 'Aprendices',
                     'url' => 'aprendices',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
-
                     'text' => 'Programas de Formación',
                     'url' => 'programasdeformacion',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
-
                     'text' => 'Eps',
                     'url' => 'eps',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
-
                     'text' => 'Tipos de documentos',
                     'url' => 'tiposdedocumentos',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
-
                     'text' => 'Roles Administrativos',
                     'url' => 'rolesadministrativos',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
-
                     'text' => 'Fichas de caracterización',
                     'url' => 'fichasdecaracterizacion',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
-
                     'text' => 'Entes conformadores',
                     'url' => 'enteconformadores',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
-
                     'text' => 'Instuctores',
                     'url' => 'instructores',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
                     'text' => 'Alternativa de etapa productiva',
                     'url' => 'alternativaetapa',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
                     'text' => 'Centros de formacion',
                     'url' => 'centrosformacion',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
                 [
                     'text' => 'Subtipos de alternativas',
                     'url' => 'subtipoalternativa',
-                    'icon' => '<i class="fa-solid fa-location-arrow"></i>',
+                    'icon' => 'fas fa-location-arrow',
                 ],
+
             ],
         ],
+
         ['header' => 'account_settings'],
+
         [
             'text' => 'profile',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-user',
         ],
+
         [
             'type' => 'navbar-item',
             'text' => 'Logout',
@@ -418,11 +418,13 @@ return [
             'url' => 'logout',
             'method' => 'post',
         ],
+
         [
             'text' => 'change_password',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
         ],
+
         [
             'text' => 'multilevel',
             'icon' => 'fas fa-fw fa-share',
@@ -461,7 +463,9 @@ return [
                 ],
             ],
         ],
+
         ['header' => 'labels'],
+
         [
             'text' => 'important',
             'icon_color' => 'red',
@@ -477,6 +481,7 @@ return [
             'icon_color' => 'cyan',
             'url' => '#',
         ],
+
     ],
 
     /*
